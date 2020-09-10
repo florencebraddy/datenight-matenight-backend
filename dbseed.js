@@ -17,22 +17,22 @@ const pool = sql.createPool({
   }
 })();
 
-(async function createUserTable() {
-  try {
-    const conn = await pool.getConnection();
+// (async function createUserTable() {
+//   try {
+//     const conn = await pool.getConnection();
 
-    conn.query("CREATE DATABASE IF NOT EXISTS datenight");
-    conn.query("USE datenight");
+//     conn.query("CREATE DATABASE IF NOT EXISTS datenight");
+//     conn.query("USE datenight");
 
-    const userDB = await conn.query(
-      "CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) UNIQUE NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, user_location VARCHAR(255) NOT NULL, profile_picture VARCHAR(255) NOT NULL, PRIMARY KEY(username) )"
-    );
-    console.log(userDB);
-    conn.release();
-  } catch (error) {
-    console.log(error);
-  }
-})();
+//     const userDB = await conn.query(
+//       "CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) UNIQUE NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, user_location VARCHAR(255) NOT NULL, profile_picture VARCHAR(255) NOT NULL, PRIMARY KEY(username) )"
+//     );
+//     console.log(userDB);
+//     conn.release();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// })();
 
 // (async function createDateNightTable() {
 //   try {
@@ -42,7 +42,7 @@ const pool = sql.createPool({
 //     conn.query("USE datenight");
 
 //     const datenightDB = await conn.query(
-//       "CREATE TABLE IF NOT EXISTS activity (id INT UNIQUE NOT NULL AUTO_INCREMENT, name VARCHAR(255) UNIQUE NOT NULL, description VARCHAR(3000) NOT NULL, actitivity_location VARCHAR(255) NOT NULL, price VARCHAR(255) NOT NULL, PRIMARY KEY(id) )"
+//       "CREATE TABLE IF NOT EXISTS activity (id INT UNIQUE NOT NULL AUTO_INCREMENT, name VARCHAR(255) UNIQUE NOT NULL, description VARCHAR(3000) NOT NULL, activity_location VARCHAR(255) NOT NULL, price VARCHAR(255) NOT NULL, PRIMARY KEY(id) )"
 //     );
 //     console.log(datenightDB);
 //     conn.release();
@@ -51,36 +51,19 @@ const pool = sql.createPool({
 //   }
 // })();
 
-// (async function createActitivityTable() {
-//   try {
-//     const conn = await pool.getConnection();
+(async function createReviewTable() {
+  try {
+    const conn = await pool.getConnection();
 
-//     conn.query("CREATE DATABASE IF NOT EXISTS datenight");
-//     conn.query("USE datenight");
+    conn.query("CREATE DATABASE IF NOT EXISTS datenight");
+    conn.query("USE datenight");
 
-//     const activityDB = await conn.query(
-//       "CREATE TABLE IF NOT EXISTS activity (id INT UNIQUE NOT NULL AUTO_INCREMENT, name VARCHAR(255) UNIQUE NOT NULL, description VARCHAR(3000) NOT NULL, activity_location VARCHAR(255) NOT NULL, price VARCHAR(255) NOT NULL, PRIMARY KEY(id) )"
-//     );
-//     console.log(activityDB);
-//     conn.release();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// })();
-
-// (async function createReviewTable() {
-//   try {
-//     const conn = await pool.getConnection();
-
-//     conn.query("CREATE DATABASE IF NOT EXISTS datenight");
-//     conn.query("USE datenight");
-
-//     const reviewDB = await conn.query(
-//       "CREATE TABLE IF NOT EXISTS review (id INT UNIQUE NOT NULL AUTO_INCREMENT, username VARCHAR(255) UNIQUE NOT NULL, date VARCHAR(255) NOT NULL, actitivity_location VARCHAR(255) NOT NULL, price VARCHAR(255) NOT NULL, PRIMARY KEY(id) )"
-//     );
-//     console.log(reviewDB);
-//     conn.release();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// })();
+    const reviewDB = await conn.query(
+      "CREATE TABLE IF NOT EXISTS review (id INT UNIQUE NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, date VARCHAR(255) NOT NULL, comments VARCHAR(100000), rating VARCHAR(5), PRIMARY KEY(id), FOREIGN KEY (name) REFERENCES activity(name), FOREIGN KEY (username) REFERENCES user(username))"
+    );
+    console.log(reviewDB);
+    conn.release();
+  } catch (error) {
+    console.log(error);
+  }
+})();
