@@ -86,4 +86,32 @@ app.get("/user", async (request, response) => {
   }
 });
 
+//POST ACTIVITY
+
+app.post("/activity", async (request, response) => {
+  try {
+    console.log("postactivity");
+
+    const con = await pool.getConnection();
+    const queryResponse = await con.execute(
+      "INSERT INTO datenight.activity ( id, name, description, activity_location, price) VALUES ( ?, ?, ?, ?, ?)",
+      [
+        request.body.id,
+        request.body.name ? request.body.name : null,
+        request.body.description ? request.body.description : null,
+        request.body.activity_location ? request.body.activity_location : null,
+        request.body.price ? request.body.price : null
+      ]
+    );
+    con.release();
+
+    console.log(queryResponse);
+
+    response.status(200).send({ messge: queryResponse });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ message: error });
+  }
+});
+
 app.listen(PORT, () => console.log(`server is running on port ${PORT}`));
