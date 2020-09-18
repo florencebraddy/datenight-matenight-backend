@@ -19,7 +19,7 @@ const pool = mysql.createPool({
 //POST USER
 app.post("/user", async (request, response) => {
   try {
-    console.log("postuser");
+    console.log("post user");
     console.log([
       request.body.username,
       request.body.first_name,
@@ -63,7 +63,7 @@ app.post("/user", async (request, response) => {
 // GET SINGLE USER AT LOGIN
 app.get("/user", async (request, response) => {
   try {
-    console.log("GET ONE USER");
+    console.log("Get one user");
 
     /*const email = request.decodedToken.email;
     if (!email) {
@@ -90,7 +90,7 @@ app.get("/user", async (request, response) => {
 
 app.post("/activity", async (request, response) => {
   try {
-    console.log("postactivity");
+    console.log("post activity");
 
     const con = await pool.getConnection();
     const queryResponse = await con.execute(
@@ -108,6 +108,53 @@ app.post("/activity", async (request, response) => {
     console.log(queryResponse);
 
     response.status(200).send({ messge: queryResponse });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ message: error });
+  }
+});
+
+//POST REVIEW
+app.post("/review", async (request, response) => {
+  try {
+    console.log("post review");
+
+    const con = await pool.getConnection();
+    const queryResponse = await con.execute(
+      "INSERT INTO datenight.review ( id, username, name, date, comments, rating) VALUES ( ?, ?, ?, ?, ?, ?)",
+      [
+        request.body.id,
+        request.body.username ? request.body.username : null,
+        request.body.name ? request.body.name : null,
+        request.body.date ? request.body.date : null,
+        request.body.comments ? request.body.comments : null,
+        request.body.rating ? request.body.rating : null
+      ]
+    );
+    con.release();
+
+    console.log(queryResponse);
+
+    response.status(200).send({ message: queryResponse });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ message: error });
+  }
+});
+
+//GET ALL REVIEWS FOR ACTIVITY
+//check how the spaces in name should be handled in url?
+app.get("/review/:activityreview", async (request, response) => {
+  try {
+    console.log("Get activity review");
+    const conn = await pool.getConnection();
+    const recordSet = await conn.execute(
+      "SELECT * FROM datenight.review WHERE name = ?",
+      [request.query.name]
+    );
+    conn.release();
+    console.log(recordSet[0]);
+    response.status(200).send({ message: recordSet[0] });
   } catch (error) {
     console.log(error);
     response.status(500).send({ message: error });
