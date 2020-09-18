@@ -59,7 +59,7 @@ const pool = sql.createPool({
 //     conn.query("USE datenight");
 
 //     const reviewDB = await conn.query(
-//       "CREATE TABLE IF NOT EXISTS review (id INT UNIQUE NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, date VARCHAR(255) NOT NULL, comments VARCHAR(100000), rating VARCHAR(5), PRIMARY KEY(id), FOREIGN KEY (name) REFERENCES activity(name), FOREIGN KEY (username) REFERENCES user(username))"
+//       "CREATE TABLE IF NOT EXISTS review (id INT UNIQUE NOT NULL AUTO_INCREMENT, username VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, date VARCHAR(255) NOT NULL, comments VARCHAR(100000), rating VARCHAR(5), PRIMARY KEY(id), FOREIGN KEY (name) REFERENCES activity(name), FOREIGN KEY (username) REFERENCES user(username))"
 //     );
 //     console.log(reviewDB);
 //     conn.release();
