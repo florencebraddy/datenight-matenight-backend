@@ -7,15 +7,15 @@ const pool = sql.createPool({
   password: process.env.DB_PASSWORD
 });
 
-(async function testConnection() {
-  try {
-    const conn = await pool.getConnection();
-    console.log("Connection Successful");
-    conn.release();
-  } catch (error) {
-    console.log(error);
-  }
-})();
+// (async function testConnection() {
+//   try {
+//     const conn = await pool.getConnection();
+//     console.log("Connection Successful");
+//     conn.release();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// })();
 
 // (async function createUserTable() {
 //   try {

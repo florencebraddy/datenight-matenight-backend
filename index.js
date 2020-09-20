@@ -32,6 +32,7 @@ app.post("/user", async (request, response) => {
       !request.body.username ||
       !request.body.first_name ||
       !request.body.last_name ||
+      !request.body.user_location ||
       !request.body.profile_picture
     ) {
       return response
@@ -83,6 +84,26 @@ app.get("/user", async (request, response) => {
   } catch (error) {
     console.log(error);
     response.status(500).send({ error: error.message, message: error });
+  }
+});
+
+//DELETE USER
+app.delete("/user", async (request, response) => {
+  try {
+    console.log("Delete user");
+
+    const conn = await pool.getConnection();
+    const recordSet = await conn.execute(
+      `DELETE FROM datenight.user WHERE username = ?`,
+      [request.query.username]
+    );
+    conn.release();
+    console.log(recordSet);
+
+    response.status(200).send({ message: recordSet[0] });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ message: error });
   }
 });
 
@@ -142,9 +163,50 @@ app.post("/review", async (request, response) => {
   }
 });
 
+//GET USER REVIEW
+app.get("/user/review", async (request, response) => {
+  try {
+    console.log("Get one users reviews");
+
+    const con = await pool.getConnection();
+    const recordset = await con.execute(
+      "SELECT * FROM datenight.review WHERE username=?",
+      [request.query.username]
+    );
+    con.release();
+
+    console.log(recordset[0]);
+
+    response.status(200).send({ message: recordset[0] });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ error: error.message, message: error });
+  }
+});
+
+//DELETE USER REVIEW
+app.delete("/review", async (request, response) => {
+  try {
+    console.log("Delete review");
+    console.log("request query", request.query);
+    const conn = await pool.getConnection();
+    const recordSet = await conn.execute(
+      `DELETE FROM datenight.review WHERE username = ? AND name =?`,
+      [request.query.username, request.query.name]
+    );
+    conn.release();
+    console.log(recordSet);
+
+    response.status(200).send({ message: recordSet[0] });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ message: error });
+  }
+});
+
 //GET ALL REVIEWS FOR ACTIVITY
-//check how the spaces in name should be handled in url?
-app.get("/review/:activityreview", async (request, response) => {
+
+app.get("/review/activityreview", async (request, response) => {
   try {
     console.log("Get activity review");
     const conn = await pool.getConnection();
