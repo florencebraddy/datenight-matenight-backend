@@ -135,6 +135,25 @@ app.post("/activity", async (request, response) => {
   }
 });
 
+//GET ALL ACTIVITES
+
+app.get("/search/activities", async (request, response) => {
+  try {
+    console.log("get all activities");
+
+    const con = await pool.getConnection();
+    const queryResponse = await con.execute("SELECT * FROM datenight.activity");
+    con.release();
+
+    console.log(queryResponse);
+
+    response.status(200).send({ messge: queryResponse[0] });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ message: error });
+  }
+});
+
 //POST REVIEW
 app.post("/review", async (request, response) => {
   try {
@@ -184,7 +203,7 @@ app.get("/user/review", async (request, response) => {
   }
 });
 
-//DELETE USER REVIEW
+//DELETE REVIEW
 app.delete("/review", async (request, response) => {
   try {
     console.log("Delete review");
