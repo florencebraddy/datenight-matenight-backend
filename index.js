@@ -154,6 +154,34 @@ app.get("/search/activities", async (request, response) => {
   }
 });
 
+//GET SINGLE ACTIVITY
+app.get("/search/activity", async (request, response) => {
+  try {
+    console.log("get single activity");
+
+    const con = await pool.getConnection();
+    const queryResponse = await con.execute(
+      "SELECT * FROM datenight.activity WHERE name=? OR description=? OR activity_location=? OR price=?",
+      [
+        request.query.name ? request.query.name : null,
+        request.query.description ? request.query.description : null,
+        request.query.activity_location
+          ? request.query.activity_location
+          : null,
+        request.query.price ? request.query.price : null
+      ]
+    );
+    con.release();
+
+    console.log(queryResponse);
+
+    response.status(200).send({ messge: queryResponse[0] });
+  } catch (error) {
+    console.log(error);
+    response.status(500).send({ message: error });
+  }
+});
+
 //POST REVIEW
 app.post("/review", async (request, response) => {
   try {
@@ -225,7 +253,7 @@ app.delete("/review", async (request, response) => {
 
 //GET ALL REVIEWS FOR ACTIVITY
 
-app.get("/review/activityreview", async (request, response) => {
+app.get("/activity/review", async (request, response) => {
   try {
     console.log("Get activity review");
     const conn = await pool.getConnection();
