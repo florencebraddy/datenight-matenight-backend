@@ -175,7 +175,7 @@ app.get("/search/activity", async (request, response) => {
 
     console.log(queryResponse);
 
-    response.status(200).send({ messge: queryResponse[0] });
+    response.status(200).send({ messge: queryResponse });
   } catch (error) {
     console.log(error);
     response.status(500).send({ message: error });
