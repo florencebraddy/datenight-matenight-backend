@@ -115,20 +115,22 @@ app.post("/activity", async (request, response) => {
 
     const con = await pool.getConnection();
     const queryResponse = await con.execute(
-      "INSERT INTO datenight.activity ( id, name, description, activity_location, price) VALUES ( ?, ?, ?, ?, ?)",
+      "INSERT INTO datenight.activity ( id, name, description, activity_location, price, location, category) VALUES ( ?, ?, ?, ?, ?, ?, ?)",
       [
         request.body.id,
         request.body.name ? request.body.name : null,
         request.body.description ? request.body.description : null,
         request.body.activity_location ? request.body.activity_location : null,
-        request.body.price ? request.body.price : null
+        request.body.price ? request.body.price : null,
+        request.body.location ? request.body.location : null,
+        request.body.category ? request.body.category : null
       ]
     );
     con.release();
 
     console.log(queryResponse);
 
-    response.status(200).send({ messge: queryResponse });
+    response.status(200).send({ message: queryResponse });
   } catch (error) {
     console.log(error);
     response.status(500).send({ message: error });
@@ -147,7 +149,7 @@ app.get("/search/activities", async (request, response) => {
 
     console.log(queryResponse);
 
-    response.status(200).send({ messge: queryResponse[0] });
+    response.status(200).send({ message: queryResponse[0] });
   } catch (error) {
     console.log(error);
     response.status(500).send({ message: error });
@@ -161,21 +163,23 @@ app.get("/search/activity", async (request, response) => {
 
     const con = await pool.getConnection();
     const queryResponse = await con.execute(
-      "SELECT * FROM datenight.activity WHERE name=? OR description=? OR activity_location=? OR price=?",
+      "SELECT * FROM datenight.activity WHERE name=? OR description=? OR activity_location=? OR price=? OR location=? OR category=?",
       [
         request.query.name ? request.query.name : null,
         request.query.description ? request.query.description : null,
         request.query.activity_location
           ? request.query.activity_location
           : null,
-        request.query.price ? request.query.price : null
+        request.query.price ? request.query.price : null,
+        request.query.location ? request.query.location : null,
+        request.query.category ? request.query.category : null
       ]
     );
     con.release();
 
-    console.log(queryResponse);
+    console.log(queryResponse[0]);
 
-    response.status(200).send({ messge: queryResponse });
+    response.status(200).send({ message: queryResponse[0] });
   } catch (error) {
     console.log(error);
     response.status(500).send({ message: error });
@@ -262,8 +266,8 @@ app.get("/activity/review", async (request, response) => {
       [request.query.name]
     );
     conn.release();
-    console.log(recordSet[0]);
-    response.status(200).send({ message: recordSet[0] });
+    console.log(recordSet[0][0]);
+    response.status(200).send({ message: recordSet[0][0] });
   } catch (error) {
     console.log(error);
     response.status(500).send({ message: error });

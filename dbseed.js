@@ -59,7 +59,7 @@ const pool = sql.createPool({
     conn.query("USE datenight");
 
     const datenightDB = await conn.query(
-      "CREATE TABLE IF NOT EXISTS activity (id INT UNIQUE NOT NULL AUTO_INCREMENT, name VARCHAR(255) UNIQUE NOT NULL, description VARCHAR(3000) NOT NULL, activity_location VARCHAR(255) NOT NULL, price VARCHAR(255) NOT NULL, PRIMARY KEY(id) )"
+      "CREATE TABLE IF NOT EXISTS activity (id INT UNIQUE NOT NULL AUTO_INCREMENT, name VARCHAR(255) UNIQUE NOT NULL, description VARCHAR(3000) NOT NULL, activity_location VARCHAR(255) NOT NULL, price VARCHAR(255) NOT NULL, location VARCHAR(225) NOT NULL, category VARCHAR(255) NOT NULL, PRIMARY KEY(id) )"
     );
     console.log(datenightDB);
     conn.release();
